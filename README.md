@@ -9,3 +9,8 @@ Interaktive Single-Page-App "Distribution & Probability Master" (Deutsch) für G
 ## Deploy auf GitHub Pages
 - Nutze `./build_and_deploy.sh docs`, um einen `docs/`-Ordner anzulegen und in Pages als Quelle auszuwählen.
 - Alternativ `./build_and_deploy.sh branch`, um automatisch einen `gh-pages`-Branch zu erzeugen/zu überschreiben.
+
+## Eigene Levels hinzufügen (No-Build)
+- Lege neue Dateien im Ordner `levels/` an, benannt als `levelXX.js` (z.B. `level04.js`).
+- Jede Datei exportiert ein `default`-Objekt mit Feldern wie `id`, `title`, `module`, `formula` und einer `setup(container, helpers)`-Funktion.
+- Die App entdeckt beim Laden automatisch alle Level-Dateien in numerischer Reihenfolge, ohne Indexpflege oder Build-Schritt.
