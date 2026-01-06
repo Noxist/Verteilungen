@@ -1,15 +1,30 @@
-﻿const level = {
-    id: 2,
-    title: "Der faire Würfel",
-    task: "Ein fairer sechsseitiger Würfel wird geworfen. Die Ergebnismenge ist Ω = {1, 2, 3, 4, 5, 6}. Jede Seite ist gleich wahrscheinlich (Laplace-Experiment). Wie hoch ist die Wahrscheinlichkeit, eine gerade Zahl (2, 4 oder 6) zu würfeln?",
-    check: function(input) {
-        let val = parseFloat(input);
-        // Lösung ist 3/6 = 0.5
-        if (Math.abs(val - 0.5) < 0.01) {
-            return { correct: true, msg: "Korrekt! Es gibt 3 günstige (2,4,6) und 6 mögliche Ergebnisse. 3/6 = 0.5" };
-        }
-        return { correct: false, msg: "Überlege: Wie viele gerade Zahlen gibt es auf einem Würfel? Teile diese Anzahl durch die Gesamtzahl der Seiten." };
+const level = {
+  id: 2,
+  title: "Zufallsvariable beim Würfel",
+  task: "Ein fairer Würfel wird einmal geworfen. Markiere alle Ergebnisse, die zum Ereignis «gerade Zahl» gehören. Die Wahrscheinlichkeit ergibt sich automatisch als Anteil der markierten Ergebnisse.",
+  data: {
+    outcomes: [1, 2, 3, 4, 5, 6],
+    selected: [] // vom UI gesetzt
+  },
+  computeProbability: function () {
+    return this.data.selected.length / this.data.outcomes.length;
+  },
+  check: function () {
+    const p = this.computeProbability();
+    if (Math.abs(p - 0.5) < 0.001) {
+      return {
+        correct: true,
+        msg: "Richtig. 3 von 6 Ergebnissen sind günstig → 3/6 = 0.5."
+      };
     }
+    return {
+      correct: false,
+      msg: "Noch nicht. Eine gerade Zahl bedeutet 2, 4 oder 6."
+    };
+  },
+  hint: "Zähle günstige Ergebnisse, nicht Wahrscheinlichkeiten."
 };
-if (typeof module !== 'undefined') module.exports = level;
-if (typeof window !== 'undefined') window.level02 = level;
+
+// Export
+if (typeof module !== "undefined") module.exports = level;
+if (typeof window !== "undefined") window.level02 = level;
