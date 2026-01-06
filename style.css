@@ -1,0 +1,26 @@
+:root {
+  --glass: rgba(255, 255, 255, 0.04);
+  --glow: rgba(94, 234, 212, 0.3);
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.card-glass {
+  background: linear-gradient(145deg, var(--glass), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+.level-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.level-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Locked Level styling per requirements */\n+.level-card.locked {\n+  opacity: 0.5;\n+  filter: grayscale(0.8);\n+  cursor: not-allowed;\n+}\n+\n+.badge {\n+  display: inline-flex;\n+  align-items: center;\n+  gap: 0.35rem;\n+  padding: 0.35rem 0.65rem;\n+  border-radius: 999px;\n+  font-weight: 600;\n+  letter-spacing: 0.05em;\n+}\n+\n+.gradient-border {\n+  position: relative;\n+  border-radius: 1rem;\n+}\n+\n+.gradient-border::after {\n+  content: '';\n+  position: absolute;\n+  inset: -1px;\n+  border-radius: inherit;\n+  background: linear-gradient(135deg, #22d3ee, #a855f7, #22c55e);\n+  z-index: -1;\n+  filter: blur(12px);\n+  opacity: 0.3;\n+}\n+\n+input[type='range']::-webkit-slider-thumb {\n+  background: linear-gradient(135deg, #22c55e, #22d3ee);\n+}\n+\n+/* Drag item styling per requirements */\n+.drag-item {\n+  background: rgb(51 65 85); /* slate-700 */\n+  border-radius: 0.75rem;\n+  padding: 0.5rem 0.75rem;\n+  cursor: grab;\n+  transition: background 0.15s ease;\n+}\n+\n+.drag-item:hover {\n+  background: rgb(71 85 105); /* lighter slate */\n+}\n+\n+/* Drop zone styling per requirements */\n+.drop-zone {\n+  border: 2px dashed rgb(71 85 105); /* slate-600 */\n+  border-radius: 0.75rem;\n+  padding: 0.75rem;\n+  min-height: 60px;\n+  display: grid;\n+  place-items: center;\n+  text-align: center;\n+  transition: border-color 0.2s ease, background 0.2s ease;\n+}\n+\n+.drop-zone.active {\n+  border-color: rgb(16 185 129); /* emerald-500 */\n+  background: rgba(16, 185, 129, 0.2);\n+}\n+\n+/* Canvas sizing to prevent overflow */\n+canvas {\n+  max-height: 320px;\n+}\n+\n+.tooltip {\n+  position: relative;\n+}\n+\n+.tooltip:hover::after {\n+  content: attr(data-tip);\n+  position: absolute;\n+  top: 120%;\n+  left: 50%;\n+  transform: translateX(-50%);\n+  background: rgba(15, 23, 42, 0.95);\n+  color: #e2e8f0;\n+  padding: 0.5rem 0.75rem;\n+  border-radius: 0.75rem;\n+  border: 1px solid rgba(255, 255, 255, 0.08);\n+  white-space: nowrap;\n+  font-size: 0.8rem;\n+  z-index: 10;\n+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);\n+}
