@@ -9,13 +9,18 @@ const interactionAreaEl = document.getElementById('interactionArea');
 const formulaEl = document.getElementById('formula');
 const progressBarEl = document.getElementById('progressBar');
 const progressLabelEl = document.getElementById('progressLabel');
-const unlockButton = document.getElementById('unlockButton');
+const prevLevelButton = document.getElementById('prevLevelButton');
+const nextLevelButton = document.getElementById('nextLevelButton');
 const chartHintEl = document.getElementById('chartHint');
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const sidebarSection = document.getElementById('sidebarSection');
+const mobileOverlay = document.getElementById('mobileOverlay');
 
 let chart;
 let levels = [];
 let activeLevelIndex = 0;
 let unlockedLevels = parseInt(localStorage.getItem('dp-unlocked') || '1', 10);
+let mobileMenuOpen = false;
 
 const baseChartOptions = {
   responsive: true,
@@ -114,6 +119,9 @@ function renderLevelList() {
       if (idx + 1 <= unlockedLevels) {
         activeLevelIndex = idx;
         renderLevel();
+        if (mobileMenuOpen) {
+          closeMobileMenu();
+        }
       }
     });
     levelListEl.appendChild(card);
@@ -128,8 +136,9 @@ function renderLevel() {
   levelTitleEl.textContent = `Level ${level.id}: ${level.title}`;
   levelConceptEl.textContent = level.concept || '';
   moduleBadgeEl.textContent = level.module || 'Modul';
-  unlockButton.disabled = level.id > unlockedLevels;
-  unlockButton.textContent = level.id === levels.length ? 'Alle Levels gemeistert' : 'Nächstes Level';
+  prevLevelButton.disabled = activeLevelIndex === 0;
+  nextLevelButton.disabled = activeLevelIndex >= levels.length - 1;
+  nextLevelButton.textContent = activeLevelIndex >= levels.length - 1 ? 'Alle Levels gemeistert' : 'Nächstes Level';
   chartHintEl.textContent = level.interaction || '';
   setFormula(level.formula);
 
@@ -151,13 +160,63 @@ function renderLevel() {
   updateProgress();
 }
 
-unlockButton.addEventListener('click', () => {
-  if (!levels.length) return;
-  if (unlockedLevels < levels.length) {
-    unlockedLevels = Math.min(levels.length, unlockedLevels + 1);
+function goToPreviousLevel() {
+  if (activeLevelIndex <= 0) return;
+  activeLevelIndex -= 1;
+  renderLevel();
+}
+
+function goToNextLevel() {
+  if (!levels.length || activeLevelIndex >= levels.length - 1) return;
+  const nextIndex = activeLevelIndex + 1;
+  if (nextIndex + 1 > unlockedLevels) {
+    unlockedLevels = Math.min(levels.length, nextIndex + 1);
     saveProgress();
-    renderLevelList();
-    renderLevel();
+  }
+  activeLevelIndex = nextIndex;
+  renderLevelList();
+  renderLevel();
+}
+
+prevLevelButton.addEventListener('click', goToPreviousLevel);
+nextLevelButton.addEventListener('click', goToNextLevel);
+
+function openMobileMenu() {
+  mobileMenuOpen = true;
+  sidebarSection.classList.remove('hidden', '-translate-x-full');
+  mobileOverlay.classList.remove('hidden');
+}
+
+function closeMobileMenu() {
+  mobileMenuOpen = false;
+  if (window.innerWidth < 768) {
+    sidebarSection.classList.add('-translate-x-full');
+    mobileOverlay.classList.add('hidden');
+    sidebarSection.classList.add('hidden');
+  }
+}
+
+mobileMenuToggle?.addEventListener('click', () => {
+  if (mobileMenuOpen) {
+    closeMobileMenu();
+  } else {
+    sidebarSection.classList.remove('hidden');
+    // trigger animation frame to allow transition
+    requestAnimationFrame(() => {
+      openMobileMenu();
+    });
+  }
+});
+
+mobileOverlay?.addEventListener('click', closeMobileMenu);
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768) {
+    sidebarSection.classList.remove('hidden', '-translate-x-full');
+    mobileOverlay.classList.add('hidden');
+    mobileMenuOpen = false;
+  } else if (!mobileMenuOpen) {
+    sidebarSection.classList.add('hidden');
   }
 });
 
