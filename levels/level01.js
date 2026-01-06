@@ -1,16 +1,24 @@
-﻿const level = {
-    id: 1,
-    title: "Der faire Münzwurf",
-    task: "Willkommen! Beginnen wir mit dem einfachsten Zufallsexperiment: Einem fairen Münzwurf. Wir betrachten das Ereignis 'Kopf' als Erfolg (1) und 'Zahl' als Misserfolg (0). Dies nennt man ein Bernoulli-Experiment. Wie hoch ist die Wahrscheinlichkeit p für einen Erfolg? Gib die Antwort als Dezimalzahl an.",
-    check: function(input) {
-        let val = parseFloat(input);
-        // Wir akzeptieren 0.5
-        if (Math.abs(val - 0.5) < 0.001) {
-            return { correct: true, msg: "Richtig! Bei einer fairen Münze ist p = 0.5." };
-        }
-        return { correct: false, msg: "Nicht ganz. Eine Münze hat 2 Seiten. Eine davon ist Kopf." };
+const level = {
+  id: 1,
+  title: "Der faire Münzwurf",
+  task: "Eine faire Münze hat zwei gleich wahrscheinliche Seiten: Kopf und Zahl. Wir definieren Kopf als Erfolg. Wie gross ist die Wahrscheinlichkeit p für einen Erfolg? Gib p als Dezimalzahl an.",
+  hint: "Beide Seiten sind gleich wahrscheinlich.",
+  check: function (input) {
+    const p = parseFloat(input);
+    if (Math.abs(p - 0.5) < 0.001) {
+      return {
+        correct: true,
+        msg: "Korrekt. Bei einer fairen Münze gilt p = 0.5."
+      };
     }
+    return {
+      correct: false,
+      msg: "Nein. Zwei gleich wahrscheinliche Ergebnisse teilen die Wahrscheinlichkeit."
+    };
+  },
+  visuals: null // bewusst keine Visualisierung in Level 1
 };
-// Export für Node.js oder Browser-Global
-if (typeof module !== 'undefined') module.exports = level;
-if (typeof window !== 'undefined') window.level01 = level;
+
+// Export
+if (typeof module !== "undefined") module.exports = level;
+if (typeof window !== "undefined") window.level01 = level;
